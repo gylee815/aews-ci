@@ -24,7 +24,7 @@ pipeline {
 
                 echo "Choice: ${params.CHOICE}"
 
-                echo "Username: ${params.USERNMAE}"
+                echo "Username: ${params.USERNAME}"
 
                 echo "Password: ${params.PASSWORD}"
             }
