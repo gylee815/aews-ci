@@ -14,8 +14,13 @@ pipeline {
     }
     stages {
         stage('Print parameters') {
-            steps {
-                echo "Stage: ${params.STAGE}"
+            echo 'Build Docker'
+            dir('./'){
+                script {
+                    sh "pwd"
+                    dockerImage = docker.build IMAGE_NAME
+                    
+                }
             }
         }
         
