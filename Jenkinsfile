@@ -25,7 +25,7 @@ pipeline {
                 script {
                     sh "pwd"
                     IMAGE_TAG = sh(returnStdout: true, script: 'date "+%Y%m%d_%H-%M-%S"').trim()
-                    sh(script: 'sed -i \'s/IMAGE_VERIOSN/${env.IMAGE_TAG}/g\' Dockerfile')
+                    sh "sed -i 's/IMAGE_VERIOSN/${env.IMAGE_TAG}/g' Dockerfile"
                     dockerImage = docker.build "${env.IMAGE_NAME}:${env.IMAGE_TAG}"
                 }
                 // docker_image_tag = sh(returnStdout: true, script: 'date "+%Y%m%d_%H-%M-%S"').trim()
