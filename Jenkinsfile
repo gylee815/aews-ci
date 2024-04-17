@@ -1,36 +1,42 @@
 pipeline {
     agent any
+
+    environment {
+        IMAGE_NAME = "dusqor815/myweb"
+        IMAGE_TAG = ''
+        registryCredential = 'docker-hub-dusqor815'
+        dockerImage = ''
+    }
+
     parameters {
-        string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
- 
-        text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
- 
-        booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
- 
-        choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
- 
-        string(name: 'USERNAME', defaultValue: 'USERNAME', description: 'Enter a username')
-
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
-
         string(name: 'STAGE', defaultValue: 'PRD', description: 'Enter a stage')
     }
     stages {
-        stage('Example') {
+        stage('Print parameters') {
             steps {
-                echo "Hello ${params.PERSON}"
-
-                echo "Biography: ${params.BIOGRAPHY}"
-
-                echo "Toggle: ${params.TOGGLE}"
-
-                echo "Choice: ${params.CHOICE}"
-
-                echo "Username: ${params.USERNAME}"
-
-                echo "Password: ${params.PASSWORD}"
-
                 echo "Stage: ${params.STAGE}"
+            }
+        }
+        stage('docker-build') {
+            steps {
+                sh "pwd"
+                IMAGE_TAG = sh "date \"+%Y%m%d_%H-%M-%S\""
+                sh "sed -i 's/IMAGE_VERIOSN/${env.IMAGE_TAG}/g' Dockerfile"
+
+                dockerImage = docker.build "${env.IMAGE_NAME}:${env.IMAGE_TAG}"
+            }
+        }
+
+        stage('docker-push'){
+            steps{
+                echo 'Push Docker'
+                script {
+                    docker.withRegistry('', registryCredential){
+                        dockerImage.push()
+                    }
+                }
+                
             }
         }
     }
