@@ -28,7 +28,7 @@ pipeline {
                 
                 // sh "sed -i 's/IMAGE_VERIOSN/${env.IMAGE_TAG}/g' Dockerfile"
 
-                dockerImage = docker.build "${env.IMAGE_NAME}:latest"
+                dockerImage = docker.build IMAGE_NAME
             }
         }
 
@@ -37,7 +37,7 @@ pipeline {
                 echo 'Push Docker'
                 script {
                     docker.withRegistry('', registryCredential){
-                        dockerImage.push()
+                        dockerImage.push("1.0.1")
                     }
                 }
                 
