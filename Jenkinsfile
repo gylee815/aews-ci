@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         IMAGE_NAME = "dusqor815/myweb"
-        IMAGE_TAG = ''
         registryCredential = 'docker-hub-dusqor815'
         dockerImage = ''
     }
@@ -24,9 +23,9 @@ pipeline {
                 echo 'Build Docker'
                 script {
                     sh "pwd"
-                    env.IMAGE_TAG = sh(returnStdout: true, script: 'date "+%Y%m%d_%H-%M-%S"').trim()
-                    sh "sed -i 's/IMAGE_VERIOSN/${env.IMAGE_TAG}/g' Dockerfile"
-                    dockerImage = docker.build "${env.IMAGE_NAME}:${env.IMAGE_TAG}"
+                    IMAGE_TAG = sh(returnStdout: true, script: 'date "+%Y%m%d_%H-%M-%S"').trim()
+                    sh "sed -i 's/IMAGE_VERIOSN/${IMAGE_TAG}/g' Dockerfile"
+                    dockerImage = docker.build "${env.IMAGE_NAME}:${IMAGE_TAG}"
                 }
                 // docker_image_tag = sh(returnStdout: true, script: 'date "+%Y%m%d_%H-%M-%S"').trim()
                 // echo "${docker_image_tag}"
