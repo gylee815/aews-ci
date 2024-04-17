@@ -12,6 +12,8 @@ pipeline {
         string(name: 'USERNAME', defaultValue: 'USERNAME', description: 'Enter a username')
 
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
+
+        string(name: 'STAGE', defaultValue: 'PRD', description: 'Enter a stage')
     }
     stages {
         stage('Example') {
@@ -27,6 +29,8 @@ pipeline {
                 echo "Username: ${params.USERNAME}"
 
                 echo "Password: ${params.PASSWORD}"
+
+                echo "Stage: ${params.STAGE}"
             }
         }
     }
