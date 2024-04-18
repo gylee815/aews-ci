@@ -24,15 +24,12 @@ pipeline {
                 echo 'Build Docker'
                 script {
                     sh "pwd"
-                    docker_image_tag = ''
+                    def docker_image_tag = params.IMAGE_TAG
                     
-                    if (params.IMAGE_TAG == ''){
+                    if (docker_image_tag == ''){
                         docker_image_tag = sh(returnStdout: true, script: 'date -u "+%Y%m%d.%H.%M.%S.%Z"').trim()
-                    } else{
-                        docker_image_tag = ${params.IMAGE_TAG}
                     }
-
-                    IMAGE_TAG = sh(returnStdout: true, script: 'date -u "+%Y%m%d.%H.%M.%S.%Z"').trim()
+                    
                     sh "sed -i 's/IMAGE_VERIOSN/${docker_image_tag}/g' Dockerfile"
                     dockerImage = docker.build "${env.IMAGE_NAME}:${docker_image_tag}"
                 }
