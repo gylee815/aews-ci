@@ -22,7 +22,7 @@ pipeline {
         
         stage('docker-build') {
             steps {
-                echo 'Build Docker'
+                echo 'Build Docker Image'
                 script {
                     sh "pwd"
                     def docker_image_tag = params.IMAGE_TAG
@@ -37,7 +37,7 @@ pipeline {
 
         stage('docker-push'){
             steps{
-                echo 'Push Docker'
+                echo 'Push Docker Image'
                 script {
                     docker.withRegistry('', registryCredential){
                         dockerImage.push()
